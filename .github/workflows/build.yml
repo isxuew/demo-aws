@@ -1,0 +1,21 @@
+name: build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: docker/login-action@v2
+        with:
+          username: isxuew
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - run: |
+          mvn package
+          docker build -t isxuew/demo-aws -f Dockerfile .
+          docker push isxuew/demo-aws
